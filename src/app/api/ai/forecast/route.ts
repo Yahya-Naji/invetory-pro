@@ -6,8 +6,8 @@ import { z } from "zod";
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return new Response("Unauthorized", { status: 401 });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return new Response("Unauthorized", { status: 401 });
 
     const { data: items } = await supabase.from("inventory_items").select("id, name, sku, quantity, reorder_level, status").limit(50);
     const { data: movements } = await supabase.from("stock_movements").select("item_id, type, quantity, created_at").order("created_at", { ascending: false }).limit(200);

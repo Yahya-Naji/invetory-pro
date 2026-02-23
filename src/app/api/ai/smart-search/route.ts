@@ -6,8 +6,8 @@ import { z } from "zod";
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return new Response("Unauthorized", { status: 401 });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return new Response("Unauthorized", { status: 401 });
 
     const { query } = await request.json();
 
